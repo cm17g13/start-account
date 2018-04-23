@@ -43,7 +43,7 @@ public class AccountManagerDBImpl {
 			manager.persist(newAccount);
 			return "{\"message\": \"the account has been added\"}";
 		} else {
-			return "{\"message\": \"the account existed, and so was not added\"}";
+			return "{\"message\": \"the account exists, and so was not added\"}";
 		}
 		
 	}
@@ -57,7 +57,7 @@ public class AccountManagerDBImpl {
 			manager.merge(existingAccount);
 			return "{\"message\": \"the account has been updated\"}";
 		} else {
-			return "{\"message\": \"the account did not exist, and was not updated\"}";
+			return "{\"message\": \"the account did not exist, and so was not updated\"}";
 		}
 		
 	}
@@ -70,7 +70,7 @@ public class AccountManagerDBImpl {
 			manager.remove(exists);
 			return "{\"message\": \"the account has been deleted\"}";
 		} else {
-			return "{\"message\": \"the account did not exist, and was not deleted\"}";
+			return "{\"message\": \"the account did not exist, and so was not deleted\"}";
 		}	
 	}
 }
