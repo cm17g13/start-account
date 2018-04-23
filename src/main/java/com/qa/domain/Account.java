@@ -1,16 +1,17 @@
 package com.qa.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Entity 
 @Table(name="Accounts")
 public class Account {
 	
-	@Column(length = 20)
+	@Size(min = 2, max = 20)
 	private String firstName;
-	@Column(length = 20)
+	@Size(min = 2, max = 20)
 	private String secondName;
-	@Id @Column(length = 20)
+	@Id @Size(min = 4, max = 4)
 	private String accountNumber;
 
 	public Account(String firstName, String secondName, String accountNumber) {
