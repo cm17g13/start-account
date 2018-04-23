@@ -9,8 +9,8 @@ public class App {
 	public static void main(String[] args) {
 		AccountService service = new AccountService();
 		JSONUtil util = new JSONUtil();
-		Account joeBloggs = new Account("Joe", "Bloggs", "1234");
-		Account janeBloggs = new Account("Jane", "Bloggs", "1234");
+		Account joeBloggs = new Account("Joe", "Bloggs", "1237");
+		Account janeBloggs = new Account("Jane", "Bloggs", "1238");
 		service.addAccountFromMap(joeBloggs);
 		service.addAccountFromMap(janeBloggs);
 		String mapAsJSON = util.getJSONForObject(service.getAccountMap());
