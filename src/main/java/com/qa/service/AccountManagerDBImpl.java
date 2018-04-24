@@ -36,9 +36,9 @@ public class AccountManagerDBImpl {
 	
 	
 	@Transactional(REQUIRED)
-	public String createAccount(String accout) {
+	public String createAccount(String account) {
 		
-		Account newAccount = jsonUtil.getObjectForJSON(accout, Account.class);
+		Account newAccount = jsonUtil.getObjectForJSON(account, Account.class);
 		if(findAnAccount(newAccount.getAccountNumber()) != null) {
 			manager.persist(newAccount);
 			return "{\"message\": \"the account has been added\"}";
@@ -50,9 +50,9 @@ public class AccountManagerDBImpl {
 	
 	
 	@Transactional(REQUIRED)
-	public String updateAccount(String id, String accountToUpdate) {
+	public String updateAccount(String account) {
 		
-		Account existingAccount = jsonUtil.getObjectForJSON(accountToUpdate, Account.class);
+		Account existingAccount = jsonUtil.getObjectForJSON(account, Account.class);
 		if (findAnAccount(existingAccount.getAccountNumber()) != null) {
 			manager.merge(existingAccount);
 			return "{\"message\": \"the account has been updated\"}";
@@ -63,9 +63,9 @@ public class AccountManagerDBImpl {
 	}
 	
 	@Transactional(REQUIRED)
-	public String deleteAccount(String id) {
+	public String deleteAccount(String accountNumber) {
 		
-		Account exists = findAnAccount(id);
+		Account exists = findAnAccount(accountNumber);
 		if (exists != null) {
 			manager.remove(exists);
 			return "{\"message\": \"the account has been deleted\"}";
