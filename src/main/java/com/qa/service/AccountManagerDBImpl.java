@@ -40,10 +40,10 @@ public class AccountManagerDBImpl {
 		
 		Account newAccount = jsonUtil.getObjectForJSON(account, Account.class);
 		if(findAnAccount(newAccount.getAccountNumber()) != null) {
+			return "{\"message\": \"the account exists, and so was not added\"}";
+		} else {
 			manager.persist(newAccount);
 			return "{\"message\": \"the account has been added\"}";
-		} else {
-			return "{\"message\": \"the account exists, and so was not added\"}";
 		}
 		
 	}
