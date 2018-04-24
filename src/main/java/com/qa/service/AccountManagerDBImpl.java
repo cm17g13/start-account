@@ -12,25 +12,23 @@ import com.qa.util.JSONUtil;
 public class AccountManagerDBImpl {
 
 	@Inject
-	JSONUtil jsonUtil;
+	private JSONUtil jsonConverter;
 
 	@PersistenceContext(unitName = "primary")
 	private EntityManager manager;
 
-	@SuppressWarnings("unchecked")
 	public String getAllAccounts() {
 		
-		Query query = manager.createQuery("SELECT a FROM ACCOUNTS a");
-		Collection<Account> accounts = (Collection<Account>) query.getResultList();
-		return jsonUtil.getJSONForObject(accounts);
+		TypedQuery<Account> query = manager.createQuery("SELECT a FROM ACCOUNTS a", Account.class);
+		Collection<Account> accounts = query.getResultList();
+		return jsonConverter.getJSONForObject(accounts);
 	}
 	
-	
-	@Transactional(SUPPORTS)
-	private Account findAnAccount(String accountNumber) {
-		
-		Query query = manager.createQuery("SELECT a FROM ACCOUNTS a WHERE a.accountNumber == :accountNumber", Account.class);
-		return  (Account) query.getSingleResult();
+
+	public Account findAnAccount(String accountNumber) {
+
+		TypedQuery<Account> query = manager.createQuery("SELECT a FROM ACCOUNTS a WHERE a.accountNumber = :accountNumber", Account.class);
+		return   query.getSingleResult();
 		//return manager.find(Account.class, accountNumber); how you'd do it if you want to use find in the EntityManager
 	}
 	
@@ -38,28 +36,26 @@ public class AccountManagerDBImpl {
 	@Transactional(REQUIRED)
 	public String createAccount(String account) {
 		
-		Account newAccount = jsonUtil.getObjectForJSON(account, Account.class);
+		Account newAccount = jsonConverter.getObjectForJSON(account, Account.class);
 		if(findAnAccount(newAccount.getAccountNumber()) != null) {
 			return "{\"message\": \"the account exists, and so was not added\"}";
 		} else {
 			manager.persist(newAccount);
 			return "{\"message\": \"the account has been added\"}";
 		}
-		
 	}
 	
 	
 	@Transactional(REQUIRED)
 	public String updateAccount(String account) {
 		
-		Account existingAccount = jsonUtil.getObjectForJSON(account, Account.class);
+		Account existingAccount = jsonConverter.getObjectForJSON(account, Account.class);
 		if (findAnAccount(existingAccount.getAccountNumber()) != null) {
 			manager.merge(existingAccount);
 			return "{\"message\": \"the account has been updated\"}";
 		} else {
 			return "{\"message\": \"the account did not exist, and so was not updated\"}";
 		}
-		
 	}
 	
 	@Transactional(REQUIRED)
@@ -72,6 +68,16 @@ public class AccountManagerDBImpl {
 		} else {
 			return "{\"message\": \"the account did not exist, and so was not deleted\"}";
 		}	
+	}
+	
+	@Transactional(REQUIRED)
+	public void setEntityManager(EntityManager manager) {
+		this.manager = manager;
+	}
+	
+	@Transactional(REQUIRED)
+	public void setJsonConverter(JSONUtil jsonConverter) {
+		this.jsonConverter = jsonConverter;
 	}
 }
 
