@@ -5,10 +5,8 @@ import com.qa.util.JSONUtil;
 import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
 import java.util.HashMap;
-import javax.enterprise.context.ApplicationScoped;
 
 
-@ApplicationScoped
 @Alternative
 public class AccountManagerMapImpl implements AccountManagerInterface {
 
